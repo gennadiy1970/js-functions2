@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Arrow</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" />
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div class="wrapper">
+        <h2>Arrow function</h2>
+        <article>
+        <h4>Синтаксис</h4>
+        <pre><kbd>const sum = <mark>function</mark> (a, b) <mark>{</mark>
+            <mark>return</mark> a + b;            
+        <mark>}</mark>
+        </kbd></pre>
+        <p>Все, отмеченное фоном у обычной функции <mark>&nbsp;&nbsp;&nbsp;&nbsp;</mark> заменяется на <kbd class="red">=&gt;</kbd> у стрелочной функции:</p>
+        <ul>
+            <li><mark>function</mark> заменятся на <span class="red">=&gt;</span></li>
+            <li>без <mark> &nbsp;{&nbsp; </mark> и <mark> &nbsp;}&nbsp; </mark> все что после <span class="red">=&gt;</span> будет <mark>return</mark></li>
+        </ul>
+        </article>
+        <article>
+        <h5>Вариант без скобок и  return</h5>
+        <pre><kbd>const sum = (a, b)  <span class="red">=&gt;</span> a + b;
+console.log(sum(2, 3))   <span class="comment">// 5</span>
+        </kbd></pre>
+    </article>
+    <article>
+        <h5>Вариант cо скобками и return</h5>
+        <p>При наличии скобок обязатльно нужно ставить <kbd>return</kbd>, иначе вернется <kbd>undefined</kbd></p>
+        <pre><kbd>const sum = (a, b)  <span class="red">=&gt;</span> { a + b; }
+console.log(sum(2, 3))   <span class="comment">// undefined</span></kbd></pre>
+            <pre><kbd>const add = (a, b)  <span class="red">=&gt;</span> { return a + b; }
+console.log(add(2, 3))   <span class="comment">// 5</span></kbd></pre>
+        </article>
+    <article>
+        <h5>Вариант без аргументов </h5>
+        <p>Обязательно требуютя пустые скобки</p>
+        <pre><kbd>const ok = ()  <span class="red">=&gt;</span> "It's ok!";
+console.log(ok())   <span class="comment">// "It's ok!"</span>        
+        </kbd></pre>
+    </article>
+    <article>
+        <h5>Вариант с одним аргументом </h5>
+        <p>Скобки не обязательны</p>
+        <pre><kbd>const add2 = a <span class="red">=&gt;</span> a + 2;
+console.log(add2(3))   <span class="comment">// 5   </span>        
+        </kbd></pre>
+    </article>    
+<article>
+        <h3>Три "нет" Arrow function</h3>
+        <ol>
+            <li>Отсутствует <kbd>arguments</kbd></li>
+            <li>Не имеет собственного <kbd>this</kbd> <span class="comment">// this по месту создания</span></li>
+            <li>Не рабтает с <kbd>new</kbd> и как следствие не рабоатет и с <kbd>super</kbd></li>
+        </ol>
+    </article>
+    <article>
+        <h3>Тестовые задания</h3>
+        <p><a href="https://codepen.io/Gorbulin/pen/yEjqwy">codepen</a></p>
+    </article>
+    </div>
+    <a href="../index.html" class="back">back</a>
+</body>
+</html>

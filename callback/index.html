@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Callback</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" />
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <h2>Callback / Функции обратного вызова</h2>
+        <article>
+            <h4>Параметр и аргумент</h4>
+            <pre><kbd>const double = (param) =&gt; param + param;</kbd></pre>
+            <pre><kbd>double(argument);</kbd> </pre>
+            <p>Функция принимает данные, преобразовывает данные и возвращает данные.</p>
+            <p>В JavaScript вместо данных функции можно передать другую функцию как аргумент, 
+                ведь та в свою очередь все равно вместо себя подставит данные.
+            </p>
+            <pre><kbd>const log = (str) =&gt; console.log(str);  
+log(double("a")); <span class="comment"> // aa</span>
+        </kbd></pre>
+        </article>
+        <article>
+            <h4>Функция как параметр и аргумент</h4>
+            <p>Также JavaScript вместо данных можно указать на применение какой-то функции как параметр.
+                А при вызове подставить конкретную функцию как аргумент.
+                    В итоге  все равно будут передаваться вычисленные данные.
+                </p>
+            <pre><kbd>
+const  add = param =&gt; param + param;</kbd></pre>
+            <pre><kbd>const  mult = param =&gt; param * param;</kbd></pre>
+            <pre><kbd>const multFoo = (num, <mark>foo</mark>) =&gt; num * <mark>foo(num)</mark>;</kbd></pre>
+            <pre><kbd>console.log(multFoo(3, <mark>add</mark>)); <span class="comment"> // 18</span></kbd></pre>
+            <pre><kbd>console.log(multFoo(3, <mark>mult</mark>)); <span class="comment"> // 27</span></kbd></pre>
+            <pre><kbd></kbd></pre>
+        </article>
+        <article>
+            <h4>Функция, как значение массива </h4>
+            <p>Этот пример показывает, что функция может быть значением массива и использоваться в вычислениях.</p>
+            <p>
+                <span class="comment">Позже мы увидим, что массив это разновидность объекта, а функция внутри объекта называется метод.</span>
+            </p>
+            <pre><kbd>
+const array = [
+    a =&gt; a + a,
+    a =&gt; a * a,
+    a =&gt; a / a,
+    a =&gt; a**a
+]      
+const ariphmetic = (arr, val) => arr.map(elem =&gt; elem(val)); 
+console.log(ariphmetic(array, 3)); <span class="comment">// [6, 9, 1, 27]</span>          
+            </kbd></pre>
+        </article>
+        <article>
+            <h4>Практическое использование</h4>
+            <p>Внимание! Этот пример служит для демонстрации эксклюзивных возможностей callbak. 
+                Не все в этом примере изучено. Полное объяснение работы с DOM и событиями будет позже.
+                Этот пример максимально прост и не рекомендутся к повторению.</p>
+            <p><a href="https://codepen.io/Gorbulin/pen/wXjEpv">codepen</a></p>
+        </article>
+        
+    </div>
+    <a href="../index.html" class="back">back</a>
+</body>
+
+</html>
