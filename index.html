@@ -1,21 +1,336 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>3-2</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" />
-    <link rel="stylesheet" href="./css/common.css">
+    <title>Function 2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" integrity="sha256-oSrCnRYXvHG31SBifqP2PM1uje7SJUyX0nTwO2RJV54="
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
+
 <body>
     <div class="wrapper">
-        <h2>Function:</h2>
-        <ul>
-            <li><a href="./arrow_functions/index.html">arrow</a></li>
-            <li><a href="./callback/index.html">callback</a></li>
-            <li><a href="./closures/index.html">closure</a></li>
-        </ul>
+        <h2>Функции 2 / Function 2</h2>
     </div>
+    <div class="wrapper">
+        <section>
+            <h4>Замыкание / Сlosure</h4>
+            <p>Замыкания — это функции, ссылающиеся на независимые (свободные) переменные. Другими словами, функция,
+                определённая в замыкании, «запоминает» окружение, в котором она была создана.</p>
+            <p>Независимые переменные — это все переменные, которые не были переданы как параметры и не были объявлены
+                как локальные.</p>
+            <p>Для понимания замыкания рассмотрим фазы жизненного цикла функции</p>
+            <article>
+                <h4>Создание функции</h4>
+                <p>Создание функции состоит из описания - сигнатура + блок, а также записи свойств this + [[Scope]]</p>
+                <p>Свойство <i>this</i> указывает на объект, в котром находится функция <span class="comment">изучим
+                        позднее</span></p>
+                <p>Свойство <i>[[Scope]]</i> <span class="comment">недоступно для обращения в JS</span> записывается
+                    окружение функции вне самой функции (т.е. <i>ИМЕНА</i> независимых переменных)</p>
+
+            </article>
+            <article>
+                <h4>Присвоение функции переменной</h4>
+                <pre><code>
+function sum (a) {
+     return a + x; 
+}
+
+let add = sum;
+add(2)   <span class="comment">0</span>
+
+x = 2;
+add(2)   <span class="comment">4</span>          
+                    </code></pre>
+                <pre><code>
+let x = 0;                
+function sum (a) {
+     return a + x; 
+}
+
+let add = sum;
+add(2)   <span class="comment">0</span>
+
+x = 2;
+add(2)   <span class="comment">4</span>          
+                    </code></pre>
+                <p>При присвоении функции переменной (т.е. присвоение имени без вызова функции) происходит передача
+                    ссылки на объект функции.
+                </p>
+                <p>Другимим словами - при присвоении функции переменной этой самой переменной передается и свойстов
+                    [[Scope]]
+                    со ссылкой на окружение функции на момент создания. Т.е. присвоение по ссылке - это не копирование.
+                </p>
+            </article>
+            <article>
+                <h4>Вызов функции</h4>
+                <p>При вызове функции происходит создание и заполнение arguments и
+                    LexicalEnvironment или лексического окружения <span class="comment">это свойство недоступно для
+                        обращения в JS.</span>.</p>
+                <p>Лексическое окружение - это все доступные <i>ЗНАЧЕНИЯ</i> имен независимых переменных.</p>
+                <p>В LexicalEnvironment при вызове также записвается
+                    и [[Scope]] с окружением на момент создания.</p>
+                <p>Другими словами - функция помнит ИМЕНА окружения на момент своего создания и заполняет их
+                    ЗНАЧЕНИЯМИ на момент вызова.</p>
+                <p><b>Последовательность поиска</b> - поиск значений осуществляется поиском имен внутри функции,
+                    а затем вне функции - последовательно поднимаясь из области видимости каждой вложенности до глобального объекта
+                    поиска.</p>
+                <details>
+                    <summary>Область видимости</summary>
+                    <pre> <code>
+const common 
+  = "Видима всем в window";
+
+function Foo () {
+  const fooScope 
+    = "Видима " 
+      + "только тем, " 
+      + "кто внутри Foo";
+
+  function Bar () {
+      const barScope 
+       = "Видима " 
+         +"только тем, "
+         + "кто внутри Bar";
+  }
+}        
+                        </code></pre>
+                </details>
+                <details>
+                    <summary>Подъем видимости</summary>
+                    <pre> <code>
+const common = 100;
+
+function Foo () {
+  const common = 200;
+
+   function Bar () {
+      const common = 300;
+      return common;
+  }
+
+  return Bar;
+}        
+                        </code></pre>
+                </details>
+                <p><b>После выполнения</b> функции все ее LexicalEnvironment (значения независимых переменных и аргументы) удаляются</p>
+            </article>
+        </section>
+        <section>
+            <h4>Создаем замыкание</h4>
+            <h4>Каррироваие - это просто</h4>
+            <p>Каррирование - это способ сделать из вызова foo(a,b,c) вызов foo(a)(b)(c)</p>
+            <p>Сделать это очень просто - нужно сделать внутри функции <i>return</i> другой функции с одним из параметров. А затем можно повторить <i>return</i> с новым параметром вунтри вложенной функции.
+            Т.е. сколько параметров - столько и возвратов вложенных функций</p>
+            <details>
+             <summary>Каррироваие</summary>
+            <pre> <code>
+<span class="comment">pow(base, exponent)</span>                
+function pow(base) {
+  function mult (exponent) {
+    return base ** exponent;
+  }
+  return mult;
+}
+
+const toPow = pow;
+toPow(2)
+<span class="comment">
+base = arguments[0];
+
+function mult (exponent) {
+  return base ** exponent;
+}   
+</span>
+
+toPow(2)(4); <span class="comment">16</span>               
+            </code></pre></details> 
+            <details>
+                <p>Частичное применение - это спостоб присвоить одному из параметров постоянное значение для новой функции</p>
+             <summary>Частичное применение</summary>
+            <pre> <code>
+<span class="comment">pow(base, exponent)</span>                
+function pow(base) {
+  function mult (exponent) {
+    return base ** exponent;
+  }
+  return mult;
+}
+
+const twoPow = pow(2);
+twoPow(3); <span class="comment">8</span>
+            </code></pre></details> 
+                <details> 
+                        <summary>Проверим видимость переменных</summary>
+                    <pre> <code>
+const common = 100;
+
+function Foo () {
+  const common = 200;
+
+   function Bar () {
+      const common = 300;
+      return common;
+  }
+
+  return Bar;
+}  
+
+const Ups = Foo;
+Ups()
+<span class="comment">function Bar () {
+  const common = 300;
+  return common;
+}</span>
+
+Ups()() <span class="comment">300</span>
+
+                </code></pre></details> 
+                <h4>Замыкание</h4>
+                <details>
+                 <summary>Счетчик на основе замыкания</summary>
+                <pre> <code>
+function addOne () {
+<span class="comment">внутренняя переменная</span>
+  let inCounter = 0;
+  
+<span class="comment">внутренняя функция</span>  
+<span class="comment">видит переменную</span>  
+  function increment() {
+<span class="comment">изменяет и возвращает</span>        
+   return inCounter += 1;
+  }
+  
+  function set(val) {
+    inCounter = val;
+  }
+  
+   function get() {
+    return inCounter;
+  }
+  
+   return increment;
+}
+
+const uno = addOne();
+uno(); <span class="comment">1</span>
+uno(); <span class="comment">2</span>
+uno(); <span class="comment">3</span>
+
+const duo = addOne();
+duo(); <span class="comment">1</span>                
+duo(); <span class="comment">2</span>                
+duo(); <span class="comment">3</span>                
+                </code></pre></details> 
+        </section>
+    </div>
+    <div class="wrapper">
+        <section>
+            <h4>Стрелочная функция / Arrow Function</h4>
+            <p><b>Синтаксис</b></p>
+            <pre><code>            
+const sum = <mark>function</mark> (a, b) <mark>{</mark>
+            <mark>return</mark> a + b;            
+        <mark>}</mark>
+            </code></pre>
+            <p>Все, отмеченное фоном у обычной функции заменяется на <mark>=&gt;</mark> у стрелочной функции</p>
+            <p><b>Без фигурных скобок и return</b></p>
+            <pre><code>
+const sum = (a, b) =&gt; a + b;           
+            </code></pre>
+            <p><b>Со скобками и return</b></p>
+            <p>При наличии скобок обязательно нужно ставить <i>return</i>, иначе вернется <i>undefined</i> </p>
+            <pre><code>
+const sum = (a, b) =&gt; {
+    return a + b;
+}               
+            </code></pre>
+            <p><b>Без параметров</b> или <b>fat</b> синтаксис</p>
+            <pre><code>
+const sum = () =&gt; a + b;
+            </code></pre>
+            <p><b>Один аргумент</b> или необязательніе <b>()</b> скобки</p>
+            <pre><code>
+const log = msg =&gt; 
+         console.log(msg);
+            </code></pre>
+
+        </section>
+        <section>
+            <h4>Три "нет" Arrow function</h4>
+        
+        <ol>
+            <li>Отсутствует <b>arguments</b> </li>
+            <li>Не имеет собственного <b>this</b> <span class="comment">this по месту создания</span> </li>
+            <li>Не рабтает с <b>new</b> и, как следствие, не рабоатет с <b>super</b></li>
+        </ol>
+        <p><b>Немного практики</b> <a href="https://codepen.io/Gorbulin/pen/yEjqwy?editors=0010"> со стрелочными функциями </a></p>
+    </section>
+    </div>
+    <div class="wrapper">
+        <section>
+            <h4>Функция обратного вызова / Callback</h4>
+            <p><b>Параметр и аргумент</b></p>
+            <p>Функция принимает данные, преобразовывает данные и возвращает данные.</p>
+            <p>В JavaScript вместо данных функции можно передать другую функцию как аргумент, ведь та в свою очередь все равно вместо себя подставит данные. </p>
+            <details>
+             <summary>Пример</summary>
+            <pre> <code>
+const double = (param) 
+    =&gt; param + param;
+
+const log = (str) =&gt;
+    console.log(str);  
+log(double("a")); <span class="comment">aa</span>               
+            </code></pre></details> 
+        </section>
+        <section>
+            <h4>Функция как параметр и аргумент</h4>
+            <p>Также JavaScript вместо данных можно указать на применение какой-то функции как параметр. А при вызове подставить конкретную функцию как аргумент. В итоге все равно будут передаваться вычисленные данные. </p>
+            <details>
+             <summary>Пример</summary>
+            <pre> <code>
+
+const  add = param 
+  =&gt; param + param;
+
+const  mult = param 
+  =&gt; param * param;
+
+const multFoo = (num, foo)
+  =&gt; num * foo(num);
+
+multFoo(3, add) <span class="comment">18</span>
+multFoo(3, mult) <span class="comment">27</span>              
+            </code></pre></details> 
+
+            <h4>Функция, как значение массива </h4>
+            <p>Этот пример показывает, что функция может быть значением массива и использоваться в вычислениях.
+                    Позже мы увидим, что массив это разновидность объекта, а функция внутри объекта называется метод. </p>
+            <details>
+             <summary>Пример</summary>
+            <pre> <code>
+const array = [
+    a =&gt; a + a,
+    a =&gt; a * a,
+    a =&gt; a / a,
+    a =&gt; a**a
+]      
+const ariphmetic = (arr, val) 
+    =&gt; arr.map(
+        elem =&gt; elem(val)
+);   
+ariphmetic(array, 3)              
+<span class="comment"> [6, 9, 1, 27]</span>
+            </code></pre></details> 
+            <h4>Пример работы callback в браузере</h4>
+            <p> <a href="https://codepen.io/Gorbulin/pen/wXjEpv">Этот пример</a> служит для демонстрации эксклюзивных возможностей callbak. Не все в этом примере изучено. Полное объяснение работы с DOM и событиями будет позже. Этот пример максимально прост и не рекомендутся к повторению.</p>
+        </section>
+    </div>
+    <script src="./js/app.js"></script>
 </body>
+
 </html>
