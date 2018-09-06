@@ -40,10 +40,8 @@ function sum (a) {
 }
 
 let add = sum;
-add(2)   <span class="comment">0</span>
-
-x = 2;
-add(2)   <span class="comment">4</span>          
+add(2)   
+<span class="comment">Exception: ReferenceError: x is not defined</span>       
                     </code></pre>
                 <pre><code>
 let x = 0;                
@@ -277,7 +275,7 @@ const log = msg =&gt;
             <p>Функция принимает данные, преобразовывает данные и возвращает данные.</p>
             <p>В JavaScript вместо данных функции можно передать другую функцию как аргумент, ведь та в свою очередь все равно вместо себя подставит данные. </p>
             <details>
-             <summary>Пример</summary>
+             <summary>Функция как аргумент</summary>
             <pre> <code>
 const double = (param) 
     =&gt; param + param;
@@ -288,10 +286,10 @@ log(double("a")); <span class="comment">aa</span>
             </code></pre></details> 
         </section>
         <section>
-            <h4>Функция как параметр и аргумент</h4>
+            <h4>Функция как параметр</h4>
             <p>Также JavaScript вместо данных можно указать на применение какой-то функции как параметр. А при вызове подставить конкретную функцию как аргумент. В итоге все равно будут передаваться вычисленные данные. </p>
             <details>
-             <summary>Пример</summary>
+             <summary>Функция как параметр</summary>
             <pre> <code>
 
 const  add = param 
